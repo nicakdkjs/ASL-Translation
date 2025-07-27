@@ -16,6 +16,8 @@ import cv2
 import time
 import mediapipe as mp
 
+from src.sentence_constructor_tts import build_sentence
+
 mp_holistic = mp.solutions.holistic 
 mp_drawing = mp.solutions.drawing_utils
 
@@ -45,6 +47,11 @@ def real_time_asl():
     Returns:
         None
     """
+
+    last_detected_time = time.time()
+    sentence_constructed = False
+    sentence = ""
+    
     res = []
     tflite_keras_model = TFLiteModel(islr_models=models)
     sequence_data = []
@@ -81,14 +88,22 @@ def real_time_asl():
             
             image = cv2.flip(image, 1)
             
-            cv2.putText(image, f"{len(sequence_data)}", (3, 35),
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-            
+            word_string = ", ".join(res[::-1])  # reverse to maintain time order
+            max_chars_per_line = 40
+            lines = [word_string[i:i+max_chars_per_line] for i in range(0, len(word_string), max_chars_per_line)]
+
+            for i, line in enumerate(lines):
+                cv2.putText(image, line, (3, 30),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
+
             image = cv2.flip(image, 1)
             
             # Insert the sign in the result set if sign is not empty.
             if sign != "" and decoder(sign) not in res:
                 res.insert(0, decoder(sign))
+                last_detected_time = time.time()
+                sentence_constructed = False
+
             
             # Get the height and width of the image
             height, width = image.shape[0], image.shape[1]
@@ -102,14 +117,35 @@ def real_time_asl():
             # Concatenate the white column to the image
             image = np.concatenate((white_column, image), axis=0)
             
-            cv2.putText(image, f"{', '.join(str(x) for x in res)}", (3, 65),
-                                cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 2, cv2.LINE_AA)
+            
+            # cv2.putText(image, f"{', '.join(str(x) for x in res)}", (3, 65),
+            #                     cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 2, cv2.LINE_AA)
                             
+            # If 3 seconds passed without new sign and we have words, build sentence
+            if time.time() - last_detected_time > 10 and res and not sentence_constructed:
+                sentence = build_sentence(res[::-1], speak = True)  # reverse since you used insert(0, ...)
+                print(f"Generated Sentence: {sentence}")
+                sentence_constructed = True
+            else:
+                pass
+            
+            if sentence:
+                cv2.putText(image, sentence, (3, 130),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
+
+
+
             cv2.imshow('Webcam Feed',image)
             
             # Wait for a key to be pressed.
-            if cv2.waitKey(10) & 0xFF == ord("q"):
+            key = cv2.waitKey(10) & 0xFF
+            if key == ord("q"):
                 break
+            elif key == ord("r"):
+                res.clear()
+                sentence = ""
+                sentence_constructed = False
+
 
         cap.release()
         cv2.destroyAllWindows()
