@@ -8,26 +8,28 @@ Author: 209sontung
 Date: May 2023
 """
 
-from src.backbone import TFLiteModel, get_model
-from src.landmarks_extraction import mediapipe_detection, draw, extract_coordinates, load_json_file 
-from src.config import SEQ_LEN, THRESH_HOLD
+from .backbone import TFLiteModel, get_model
+from .landmarks_extraction import mediapipe_detection, draw, extract_coordinates, load_json_file 
+from .config import SEQ_LEN, THRESH_HOLD
+from .sentence_constructor_tts import build_sentence
+
 import numpy as np
 import cv2
 import time
 import mediapipe as mp
-
-from src.sentence_constructor_tts import build_sentence
+import os
 
 mp_holistic = mp.solutions.holistic 
 mp_drawing = mp.solutions.drawing_utils
 
-s2p_map = {k.lower():v for k,v in load_json_file("src/sign_to_prediction_index_map.json").items()}
-p2s_map = {v:k for k,v in load_json_file("src/sign_to_prediction_index_map.json").items()}
+map_path = os.path.join(os.path.dirname(__file__), "sign_to_prediction_index_map.json")
+s2p_map = {k.lower():v for k,v in load_json_file(map_path).items()}
+p2s_map = {v:k for k,v in load_json_file(map_path).items()}
 encoder = lambda x: s2p_map.get(x.lower())
 decoder = lambda x: p2s_map.get(x)
 
 models_path = [
-                './models/islr-fp16-192-8-seed_all42-foldall-last.h5',
+                '../models/islr-fp16-192-8-seed_all42-foldall-last.h5',
 ]
 models = [get_model() for _ in models_path]
 

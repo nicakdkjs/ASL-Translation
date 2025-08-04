@@ -36,7 +36,8 @@ def build_sentence(predicted_words, speak=False):
 
     # Use TTS if requested
     if speak:
-        tts.tts_to_file(text=sentence, file_path="output.wav")
-        play_audio("output.wav")
+        audio_path = "static/output.wav"
+        tts.tts_to_file(text=sentence, file_path=audio_path)
+        return sentence, audio_path
 
     return sentence
