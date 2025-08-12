@@ -1,0 +1,101 @@
+input_words,target_sentence
+"['i', 'want', 'apple']",I want an apple.
+"['mom', 'say', 'no']",Mom says no.
+"['dog', 'sleep', 'bed']",A dog sleeping on a bed.
+"['thankyou', 'mom']","Thank you, mom."
+"['go', 'outside', 'play']",Let's go outside to play.
+"['i', 'hungry', 'want', 'pizza']",I am hungry and want pizza.
+"['read', 'book', 'before', 'sleep']",Read a book before sleeping.
+"['where', 'kitty']",Where is the kitty?
+"['drink', 'water', 'now']",Drink water now.
+"['dad', 'give', 'gift']",Dad gave me a gift.
+"['see', 'bird', 'tree']",I see a bird in the tree.
+"['boy', 'ride', 'horse']",A boy is riding a horse.
+"['baby', 'cry', 'because', 'hungry']",A baby is crying because he is hungry.
+"['say', 'hello', 'grandma']",Say hello to grandma.
+"['puppy', 'cute']",The puppy is cute.
+"['have', 'nap', 'now']",I want to have a nap now.
+"['listen', 'music', 'radio']",A man listens to music on a radio.
+"['flower', 'red', 'pretty']",The red flower is pretty.
+"['ride', 'airplane', 'tomorrow']",We will ride an airplane tomorrow.
+"['cat', 'under', 'table']",A cat under a table.
+"['talk', 'uncle', 'apple', 'that', 'loud']",The uncle is talking loudly about the apple.
+"['pool', 'penny', 'gum', 'pajamas', 'donkey']",Donkey in pajamas with gum and penny in the pool.
+"['brown', 'room']",The room is Brown.
+"['pretty', 'ride', 'red']",A man is riding a bike in red and it is pretty.
+"['noisy', 'bed', 'dirty']",A bed that is dirty and noisy.
+"['smile', 'pencil', 'man']",A man smiles at a pencil.
+"['red', 'touch']",A touch of red.
+"['lion', 'hat']",Lion in a hat.
+"['nap', 'book', 'store', 'outside']",A man is napping on the outside of a book store.
+"['better', 'person']",Better person.
+"['room', 'doll']",A doll in a room.
+"['bug', 'backyard']",Bug in the backyard.
+"['many', 'dryer', 'man']",A man tries to dry many clothes in a dryer.
+"['shower', 'dirty']",The shower is dirty.
+"['fish', 'swim', 'pool']",Fish swimming in a pool.
+"['cloud', 'rain']",The clouds bring rain.
+"['girl', 'like', 'icecream']",A girl likes icecream.
+"['cow', 'farm']",Cows on a farm.
+"['frog', 'jump', 'grass']",Frog jumping in the grass.
+"['puppy', 'play', 'outside']",A puppy is playing outside.
+"['bird', 'tree']",A bird on a treee.
+"['flower', 'pretty']",The flower is pretty.
+"['boy', 'ride', 'airplane']",A boy is riding an airplane.
+"['mom', 'give', 'gift']",Mom gave a gift.
+"['dad', 'read', 'book']",A dad is reading a book.
+"['girl', 'sleep', 'bed']",A girl sleeps on a bed.
+"['lion', 'roar']",The lion is roaring.
+"['elephant', 'big']",The elephant is big.
+"['duck', 'swim', 'pond']",Ducks swimming in a pond.
+"['moon', 'night']",The moon shines at night.
+"['baby', 'cry', 'hungry']",The baby is crying and hungry.
+"['uncle', 'talk', 'funny']",Uncle is talking in a funny way.
+"['tree', 'green']",The tree is green.
+"['zebra', 'run', 'grass']",The zebra runs in the grass.
+"['sun', 'hot']",The sun is hot.
+"['girl', 'dance', 'music']",A girl is dancing to music.
+"['girl', 'draw', 'cat']",A girl is drawing a cat.
+"['boy', 'kick', 'ball']",A boy kicks a ball.
+"['child', 'eat', 'pizza']",A child eats a pizza.
+"['dog', 'run', 'outside']",A dog is running outside.
+"['mom', 'cook', 'food']",A mom is cooking food.
+"['dad', 'drive', 'car']",Dad driving a car.
+"['baby', 'drink', 'milk']",A baby is drinking milk.
+"['puppy', 'sleep', 'sofa']",A puppy is sleeping on a sofa.
+"['teacher', 'talk', 'class']",A teacher talking to a class.
+"['fish', 'swim', 'tank']",Fish swimming in a tank.
+"['bird', 'fly', 'sky']",Birds flying in the sky.
+"['child', 'play', 'toy']",A child is playing with a toy.
+"['boy', 'ride', 'bike']",A boy is riding a bike.
+"['girl', 'smile', 'mom']",A girl is smiling at her mom.
+"['lion', 'sleep', 'zoo']",Lion sleeping in the zoo.
+"['uncle', 'read', 'story']",An uncle is reading a story.
+"['cat', 'hide', 'closet']",A cat hiding in a closet.
+"['child', 'climb', 'stairs']",A child is climbing a staircase.
+"['sun', 'shine', 'morning']",The sun shines in the morning.
+"['zebra', 'walk', 'grass']",The zebra walks in the grass.
+"['elephant', 'drink', 'water']",An elephant is drinking water.
+"['baby', 'cry', 'bed']",A baby crying in a bed.
+"['girl', 'hug', 'puppy']", A girl hugging a puppy.
+"['boy', 'look', 'cloud']",The boy is looking at the clouds.
+"['mom', 'say', 'yes']",Mom says yes.
+"['dad', 'say', 'no']",Dad says no.
+"['rain', 'fall', 'cloud']",Rain falling from the clouds.
+"['child', 'eat', 'icecream']",A child is eating icecream.
+"['brother', 'share', 'toy']",The brother shares his toy.
+"['girl', 'ride', 'horse']",A girl riding a horse.
+"['boy', 'eat', 'apple']",A boy eats an apple.
+"['baby', 'sleep', 'bed']",A baby sleeping on a bed.
+"['child', 'read', 'book']",A child is reading a book.
+"['mom', 'hug', 'baby']",A mom hugging her baby.
+"['dad', 'cook', 'food']",Dad is cooking food.
+"['puppy', 'lick', 'face']",A puppy is licking his face.
+"['girl', 'paint', 'flower']",A girl is painting a flower.
+"['boy', 'throw', 'ball']",A boy is throwing a ball.
+"['grandma', 'bake', 'cake']",A grandma is baking a cake.
+"['cat', 'jump', 'table']",The cat jumped on the table.
+"['dog', 'bark', 'loud']",A dog is barking loudly.
+"['girl', 'clap', 'happy']",The girl is clapping because she is happy.
+"['boy', 'run', 'grass']",A boy is running on the grass.
+"['child', 'draw', 'sun']",A child draws the sun.

@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\ngnic\OneDrive\Documents\school\year 3\Sem 2\fyp\gesture-recognition\venv310"
+VIRTUAL_ENV="C:\Users\ngnic\OneDrive\Documents\school\year 3\ASL-translation\venv310"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
