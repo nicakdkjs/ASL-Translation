@@ -1,8 +1,16 @@
 input_words,target_sentence
+"['girl', 'paint', 'flower']",A girl is painting a flower.
+"['boy', 'throw', 'ball']",A boy is throwing a ball.
+"['grandma', 'bake', 'cake']",A grandma is baking a cake.
+"['cat', 'jump', 'table']",The cat jumped on the table.
+"['dog', 'bark', 'loud']",A dog is barking loudly.
+"['girl', 'clap', 'happy']",The girl is clapping because she is happy.
+"['boy', 'run', 'grass']",A boy is running on the grass.
+"['child', 'draw', 'sun']",A child draws the sun.
 "['i', 'want', 'apple']",I want an apple.
 "['mom', 'say', 'no']",Mom says no.
 "['dog', 'sleep', 'bed']",A dog sleeping on a bed.
-"['thankyou', 'mom']","Thank you, mom."
+"['thankyou', 'mom']",Thank you mom.
 "['go', 'outside', 'play']",Let's go outside to play.
 "['i', 'hungry', 'want', 'pizza']",I am hungry and want pizza.
 "['read', 'book', 'before', 'sleep']",Read a book before sleeping.
@@ -91,11 +99,3 @@ input_words,target_sentence
 "['mom', 'hug', 'baby']",A mom hugging her baby.
 "['dad', 'cook', 'food']",Dad is cooking food.
 "['puppy', 'lick', 'face']",A puppy is licking his face.
-"['girl', 'paint', 'flower']",A girl is painting a flower.
-"['boy', 'throw', 'ball']",A boy is throwing a ball.
-"['grandma', 'bake', 'cake']",A grandma is baking a cake.
-"['cat', 'jump', 'table']",The cat jumped on the table.
-"['dog', 'bark', 'loud']",A dog is barking loudly.
-"['girl', 'clap', 'happy']",The girl is clapping because she is happy.
-"['boy', 'run', 'grass']",A boy is running on the grass.
-"['child', 'draw', 'sun']",A child draws the sun.
