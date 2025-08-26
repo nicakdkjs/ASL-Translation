@@ -4,8 +4,13 @@ const wordEl = document.getElementById('word');
 const sentenceEl = document.getElementById('sentence');
 const wordList = [];
 
+function renderWords() {                                     
+  wordEl.textContent = wordList.length ? wordList.join(", ") : "-";
+}
+
+
 navigator.mediaDevices.getUserMedia({ video: true })
-.then(stream => { video.srcObject = stream; });
+  .then(stream => { video.srcObject = stream; });
 
 setInterval(() => {
     const context = canvas.getContext('2d');
@@ -32,7 +37,7 @@ setInterval(() => {
                 wordList.unshift(data.word); // add new word to front
                 if (wordList.length > 10) wordList.pop(); // limit list size
             }
-            wordEl.textContent = wordList.join(", ");
+            renderWords();                         // ← use helper
         }
 
         // if (data.sentence) {
@@ -41,21 +46,9 @@ setInterval(() => {
     });
 }, 66);
 
-document.getElementById('generateBtn').addEventListener('click', () => {
-    fetch('/generate_sentence', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ words: wordList })
-    })
-    .then(res => res.json())
-    .then(data => {
-        sentenceEl.textContent = data.sentence;
-    });
-});
-
 function clearWords() {
     wordList.length = 0;
-    wordEl.textContent = "-";
+    renderWords();                         // ← use helper
     sentenceEl.textContent = "-";
 
     fetch('/clear', {
@@ -63,25 +56,112 @@ function clearWords() {
     });
 }
 
+function speak(text) {
+  // normalize multiple spaces to one
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (!clean) return;
+  const utterance = new SpeechSynthesisUtterance(clean);
+  utterance.lang = 'en-US';
+  utterance.rate = 1;
+  speechSynthesis.speak(utterance);
+}
+
+// Make the editable sentence behave well
+sentenceEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') e.preventDefault();   // no newlines
+});
+sentenceEl.addEventListener('blur', () => {
+  const t = sentenceEl.textContent.replace(/\s+/g, ' ').trim();
+  sentenceEl.textContent = t || '-';
+});
 
 document.getElementById('speakBtn').addEventListener('click', () => {
-    fetch('/generate_sentence', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ words: wordList, speak: false })  // just generate, no TTS
-    })
-    .then(res => res.json())
-    .then(data => {
-        const sentence = data.sentence;
-        sentenceEl.textContent = sentence;
+  // Prefer whatever is currently edited in the UI
+  let edited = sentenceEl.textContent.replace(/\s+/g, ' ').trim();
 
-        // Now speak the freshly generated sentence
-        if (sentence && sentence !== '-') {
-            const utterance = new SpeechSynthesisUtterance(sentence);
-            utterance.lang = 'en-US';
-            utterance.rate = 1;
-            speechSynthesis.speak(utterance);
-        }
+  if (edited && edited !== '-') {
+    // Log the edited + (optionally) the last generated
+    fetch('/log_sentence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: 'speak',
+        words: wordList,
+        generated_sentence: lastGenerated,
+        edited_sentence: edited
+      })
     });
+
+    // Speak the edited text
+    speak(edited);
+    return;
+  }
+
+  // Fallback: generate from words, then speak + log both
+  fetch('/generate_sentence', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ words: wordList, speak: false })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const sentence = (data.sentence || '').trim();
+    sentenceEl.textContent = sentence || '-';
+    lastGenerated = sentence;
+
+    // Log: no manual edit in this fallback path
+    fetch('/log_sentence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: 'speak',
+        words: wordList,
+        generated_sentence: sentence,
+        edited_sentence: ''
+      })
+    });
+
+    if (sentence) speak(sentence);
+  });
+});
+
+
+// add near your other DOM listeners
+document.getElementById('deleteBtn').addEventListener('click', () => {
+  if (!wordList.length) return;
+  const removed = wordList.shift();     // newest is at the front
+  renderWords();                        // refresh "Detected Words" display
+  // (optional) tell server so its `res` list matches the browser
+  fetch('/delete_last', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ word: removed })
+  }).catch(() => {}); // best-effort; UI already updated
+});
+
+let lastGenerated = ""; // cache the server's generated sentence
+document.getElementById('generateBtn').addEventListener('click', () => {
+  fetch('/generate_sentence', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ words: wordList })
+  })
+  .then(res => res.json())
+  .then(data => {
+    lastGenerated = (data.sentence || '').trim();
+    sentenceEl.textContent = lastGenerated || '-';
+
+    // Log the generation
+    fetch('/log_sentence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: 'generate',
+        words: wordList,
+        generated_sentence: lastGenerated,
+        edited_sentence: ''
+      })
+    });
+  });
 });
 

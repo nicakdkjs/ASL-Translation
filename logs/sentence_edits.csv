@@ -1,0 +1,3 @@
+timestamp_iso,event,words_json,generated_sentence,edited_sentence,client_id
+2025-08-26T12:31:46.860210,speak,"[""grass"", ""apple"", ""lion""]",Lion eating grass next to an apple.,Lion eating grass next test test to an apple.,127.0.0.1
+2025-08-26T12:31:55.604839,speak,"[""apple"", ""lion""]",Lion eating an apple.,Lion eating test an apple.,127.0.0.1

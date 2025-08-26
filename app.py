@@ -8,6 +8,11 @@ from src.config import SEQ_LEN, THRESH_HOLD
 from src.sentence_constructor_tts import build_sentence
 import mediapipe as mp
 import io
+import csv, os, json, datetime
+import re
+
+LOG_DIR = "logs"
+LOG_PATH = os.path.join(LOG_DIR, "sentence_edits.csv")
 
 app = Flask(__name__)
 
@@ -83,6 +88,58 @@ def clear():
     res.clear()
     return jsonify({"status": "cleared"})
 
+@app.route('/delete_last', methods=['POST'])
+def delete_last():
+    global res
+    data = request.get_json(silent=True) or {}
+    w = data.get("word")
+    if res:
+        # Prefer removing the front item (latest); fall back to value match
+        if w and res[0] == w:
+            res.pop(0)
+        elif w in res:
+            res.remove(w)
+        else:
+            res.pop(0)
+    return jsonify({"status": "ok", "remaining": res})
+
+def ensure_logfile():
+    os.makedirs(LOG_DIR, exist_ok=True)
+    header = ["timestamp_iso", "event", "words_json", "generated_sentence", "edited_sentence", "client_id"]
+    if not os.path.exists(LOG_PATH):
+        with open(LOG_PATH, "w", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerow(header)
+
+def _norm(s: str) -> str:
+    # collapse whitespace, lowercase, strip outer punctuation spaces
+    s = (s or "").strip()
+    s = re.sub(r"\s+", " ", s)
+    return s.lower()
+
+@app.route('/log_sentence', methods=['POST'])
+def log_sentence():
+    ensure_logfile()
+    data = request.get_json(force=True) or {}
+    event = data.get("event", "")
+    words = data.get("words", [])
+    generated = (data.get("generated_sentence") or "").strip()
+    edited = (data.get("edited_sentence") or "").strip()
+    client_id = request.remote_addr or "unknown"
+
+    # ONLY log if edited exists and is different from generated
+    if not edited or _norm(edited) == _norm(generated):
+        return jsonify({"status": "skipped", "reason": "no_edit"})
+
+    with open(LOG_PATH, "a", newline="", encoding="utf-8") as f:
+        csv.writer(f).writerow([
+            datetime.datetime.utcnow().isoformat(),
+            (event or "edit"),
+            json.dumps(words, ensure_ascii=False),
+            generated,
+            edited,
+            client_id,
+        ])
+    return jsonify({"status": "logged"})
 
 if __name__ == '__main__':
     app.run(debug=True)
