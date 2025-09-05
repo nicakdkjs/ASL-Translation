@@ -5,7 +5,6 @@ import base64
 from src.backbone import TFLiteModel, get_model
 from src.landmarks_extraction import mediapipe_detection, extract_coordinates, load_json_file
 from src.config import SEQ_LEN, THRESH_HOLD
-from src.sentence_constructor_tts import build_sentence
 import mediapipe as mp
 import io
 import csv, os, json, datetime
@@ -70,6 +69,8 @@ def predict():
 
 @app.route('/generate_sentence', methods=['POST'])
 def generate_sentence():
+    from src.sentence_constructor_tts import build_sentence
+
     data = request.get_json()
     words = data.get("words", [])
     speak = data.get("speak", False)
